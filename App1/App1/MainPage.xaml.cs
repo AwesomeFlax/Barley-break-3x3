@@ -30,13 +30,16 @@ namespace App1
             this.MaxHeight = 600;
             this.MaxWidth = 600;
 
+            // начальное заполнение матрицы
             createMatrix();
 
+            // проверка на решаемость и перезапись в противном случае
             if (checkMatrix() == false)
                 while (!checkMatrix())
                     createMatrix();
         }
 
+        // главная функция - клак по кнопке
         private void my_func(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;                                      // принимаем нажатую кнопку
@@ -48,6 +51,7 @@ namespace App1
             if (victory()) repaintIt();
         }
 
+        // проверка, можем ли менять, если да - то в каком направлении
         public int canWeSwap(int _number)
         {
             int[] index = new int[2];
@@ -84,6 +88,7 @@ namespace App1
             return 0;
         }
 
+        // смена позиции кнопки + обновление данных в матрице
         public void swapTwoButtons(int _number, int mode, Button _but)
         {
             //int temp = 0;
@@ -125,6 +130,7 @@ namespace App1
             }
         }
 
+        // проверка на победу
         public bool victory()
         {
             bool vict = true;
@@ -137,6 +143,7 @@ namespace App1
             return vict;
         }
 
+        // то, что мы делаем при победе - лок кнопок
         public void repaintIt()
         {
             but_1.IsEnabled = false;
@@ -149,6 +156,7 @@ namespace App1
             but_8.IsEnabled = false;
         }
 
+        // проверка матрицы на решаемость
         public bool checkMatrix()
         {
             int[] a = new int[9];
@@ -179,6 +187,7 @@ namespace App1
                 return true;
         }
 
+        // заполнение матрицы случайными неповторяющимися числами от 1 до 9
         public void createMatrix()
         {
             Random b = new Random();
