@@ -30,21 +30,11 @@ namespace App1
             this.MaxHeight = 600;
             this.MaxWidth = 600;
 
-            // матрица для работы с этой херней
+            createMatrix();
 
-            /*for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                    Matrix[i, j] = i * 3 + j + 1;*/
-
-            Matrix[0, 0] = 1;
-            Matrix[0, 1] = 3;
-            Matrix[0, 2] = 7;
-            Matrix[1, 0] = 8;
-            Matrix[1, 1] = 2;
-            Matrix[1, 2] = 5;
-            Matrix[2, 0] = 4;
-            Matrix[2, 1] = 6;
-            Matrix[2, 2] = 9;
+            if (checkMatrix() == false)
+                while (!checkMatrix())
+                    createMatrix();
         }
 
         private void my_func(object sender, RoutedEventArgs e)
@@ -55,8 +45,7 @@ namespace App1
             if (canWeSwap(number) != 0)                                         // проверяем, можно ли свапать
                 swapTwoButtons(number, canWeSwap(number), button);              // свапаем, если можно
 
-            if (victory())
-                repaintIt();
+            if (victory()) repaintIt();
         }
 
         public int canWeSwap(int _number)
@@ -141,7 +130,7 @@ namespace App1
             bool vict = true;
 
             for (int i = 0; i < 3; i++)
-                for (int j = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
                     if (Matrix[i, j] != i * 3 + j + 1)
                         vict = false;
 
@@ -150,14 +139,95 @@ namespace App1
 
         public void repaintIt()
         {
-            but_1.Content = "V";
-            but_2.Content = "I";
-            but_3.Content = "C";
-            but_4.Content = "T";
-            but_5.Content = "O";
-            but_6.Content = "R";
-            but_7.Content = "Y";
-            but_8.Content = "!";
+            but_1.IsEnabled = false;
+            but_2.IsEnabled = false;
+            but_3.IsEnabled = false;
+            but_4.IsEnabled = false;
+            but_5.IsEnabled = false;
+            but_6.IsEnabled = false;
+            but_7.IsEnabled = false;
+            but_8.IsEnabled = false;
+        }
+
+        public bool checkMatrix()
+        {
+            int[] a = new int[9];
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    a[i * 3 + j] = Matrix[i, j];
+
+            for (int i = 0; i < 9; i++)
+                if (a[i] == 9)
+                    a[i] = 0;
+
+            int inv = 0;
+
+            for (int i = 0; i < 9; ++i)
+                if (a[i] != 0)
+                    for (int j = 0; j < i; ++j)
+                        if (a[j] > a[i])
+                            ++inv;
+
+            for (int i = 0; i < 9; ++i)
+                if (a[i] == 0)
+                    inv += 1 + i / 4;
+
+            if (inv % 2 == 0)
+                return false;
+            else
+                return true;
+        }
+
+        public void createMatrix()
+        {
+            Random b = new Random();
+            int[] a = new int[9];
+            int temp;
+            int counter;
+            bool chk;
+
+            for (int i = 0; i < 9; i++)
+                a[i] = 0;
+
+            a[0] = b.Next(1, 10);
+            counter = 1;
+
+            while (counter != 9)
+            {
+                chk = true;
+
+                temp = b.Next(1, 10);
+                for (int i = 0; i < 9; i++)
+                    if (a[i] == temp)
+                        chk = false;
+
+                if (chk)
+                {
+                    a[counter] = temp;
+                    counter++;
+                }
+            }
+
+            for (int i = 0; i < 9; i++)
+                if (a[i] == 9)
+                {
+                    a[i] = a[8];
+                    a[8] = 9;
+                }
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    Matrix[i, j] = a[i * 3 + j];
+
+            but_1.Content = a[0].ToString();
+            but_2.Content = a[1].ToString();
+            but_3.Content = a[2].ToString();
+            but_4.Content = a[3].ToString();
+            but_5.Content = a[4].ToString();
+            but_6.Content = a[5].ToString();
+            but_7.Content = a[6].ToString();
+            but_8.Content = a[7].ToString();
         }
     }
 }
