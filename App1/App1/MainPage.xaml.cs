@@ -36,7 +36,7 @@ namespace App1
             // проверка на решаемость и перезапись в противном случае
             if (checkMatrix() == false)
                 while (!checkMatrix())
-                    createMatrix();
+                   createMatrix();
         }
 
         // главная функция - клак по кнопке
@@ -229,6 +229,7 @@ namespace App1
                 for (int j = 0; j < 3; j++)
                     Matrix[i, j] = a[i * 3 + j];
 
+            // запись данных на игрвое поле
             but_1.Content = a[0].ToString();
             but_2.Content = a[1].ToString();
             but_3.Content = a[2].ToString();
